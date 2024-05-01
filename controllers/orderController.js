@@ -18,7 +18,7 @@ exports.allOrders = async (req, res) => {
 exports.findOrder = async (req, res) => {
   try {
     const id = req.params.id;
-    const order = await orderModel.findById(id).populate("product");
+    const order = await orderModel.findById(id).populate("productList.product");
     if (!order) {
       res.status(404).json({ error: "Order not found !" });
     }
@@ -31,27 +31,9 @@ exports.findOrder = async (req, res) => {
 
 exports.createOrder = async (req, res) => {
   try {
-    const {
-      fullname,
-      phone,
-      city,
-      address,
-      review,
-      product,
-      color,
-      size,
-      quantity,
-    } = req.body;
-    if (
-      !fullname ||
-      !phone ||
-      !city ||
-      !address ||
-      !product ||
-      !color ||
-      !size ||
-      !quantity
-    ) {
+    const { fullname, phone, city, address, review, productList, total } =
+      req.body;
+    if (!fullname || !phone || !city || !address || productList.length < 1) {
       res.status(404).json("All fields are required !");
     }
     const order = new orderModel({
@@ -60,10 +42,8 @@ exports.createOrder = async (req, res) => {
       city,
       address,
       review,
-      product,
-      color,
-      size,
-      quantity,
+      productList,
+      total,
     });
     const newOrder = await order.save();
     res.send(newOrder);

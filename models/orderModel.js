@@ -23,21 +23,29 @@ const orderSchema = mongoose.Schema(
     review: {
       type: String,
     },
-    product: {
-      type: mongoose.Types.ObjectId,
-      ref: "Product",
-      required: true,
-    },
-    color: {
-      type: String,
-      required: true,
-    },
-    size: {
-      type: String,
-      required: true,
-    },
-    quantity: {
-      type: String,
+    productList: [
+      {
+        product: {
+          type: mongoose.Types.ObjectId,
+          ref: "Product",
+          required: true,
+        },
+        color: {
+          type: String,
+          required: true,
+        },
+        size: {
+          type: String,
+          required: true,
+        },
+        quantity: {
+          type: Number,
+          required: true,
+        },
+      },
+    ],
+    total: {
+      type: Number,
       required: true,
     },
   },

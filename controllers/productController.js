@@ -7,18 +7,6 @@ exports.allProducts = (req, res) => {
     let sortBy = req.query.sortBy ? req.query.sortBy : "_id";
     let order = req.query.order ? req.query.order : "asc";
     let limit = req.query.limit ? parseInt(req.query.limit) : 40;
-    let search = req.query.search;
-    let category = req.query.category;
-
-    let query = {}; // Define the query object here
-
-    // if (search) {
-    //   query.name = { $regex: search, $options: "i" };
-    // }
-
-    // if (category) {
-    //   query.category = category;
-    // }
 
     productModel
       .find()
@@ -56,7 +44,7 @@ exports.searchProducts = (req, res) => {
     }
 
     productModel
-      .find()
+      .find(findArgs)
       .populate("categories") // to get the value of category not just the id
       .sort([[sortBy, order]])
       .limit(limit)

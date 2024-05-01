@@ -4,21 +4,21 @@ const pageSchema = mongoose.Schema(
   {
     name: {
       type: String,
-      require: true,
+      // required: true,
       minlength: 3,
       maxlength: 50,
       unique: true,
     },
     slug: {
       type: String,
-      require: true,
+      // required: true,
       minlength: 3,
-      maxlength: 25,
-      unique: true,
+      maxlength: 50,
+      // unique: true,
     },
     description: {
       type: String,
-      require: true,
+      // required: true,
     },
   },
   { timestamps: true }

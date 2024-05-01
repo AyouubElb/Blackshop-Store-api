@@ -32,6 +32,7 @@ exports.findPage = async (req, res) => {
 exports.createPage = async (req, res) => {
   try {
     const { name, slug, description } = req.body;
+    console.log("Test", name, slug);
     if (!name || !slug || !description) {
       res.status(404).json("All fields is required !");
     }
