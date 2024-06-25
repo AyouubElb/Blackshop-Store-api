@@ -27,6 +27,10 @@ const productSchema = mongoose.Schema(
           type: String,
           require: true,
         },
+        cloudinary_id: {
+          type: String,
+          required: true,
+        },
       },
     ],
     sizes: [

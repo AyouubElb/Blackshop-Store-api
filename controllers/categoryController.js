@@ -1,6 +1,7 @@
 const categoryModel = require("../models/categoryModel");
 const fs = require("fs");
 const mongoose = require("mongoose");
+const cloudinary = require("../middlewares/cloudinary");
 
 exports.allCategories = async (req, res) => {
   try {
@@ -34,8 +35,17 @@ exports.findCategory = async (req, res) => {
 exports.createCategory = async (req, res) => {
   try {
     const { name, description } = req.body;
-    const image = req.file.filename;
-    const category = new categoryModel({ name, description, image });
+
+    // Upload image to cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path);
+
+    const category = new categoryModel({
+      name,
+      description,
+      image: result.secure_url,
+      cloudinary_id: result.public_id,
+    });
+
     await category.save();
     res.send(category);
   } catch (error) {

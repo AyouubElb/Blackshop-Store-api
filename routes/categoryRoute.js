@@ -8,7 +8,8 @@ const {
   deleteCategory,
 } = require("../controllers/categoryController");
 
-const { upload } = require("../middlewares/uploadImage");
+// const { upload } = require("../middlewares/uploadImage");
+const upload = require("../middlewares/multer");
 
 const router = express.Router();
 

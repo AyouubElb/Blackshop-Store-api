@@ -1,6 +1,7 @@
 const productModel = require("../models/productModel");
 const fs = require("fs");
 const mongoose = require("mongoose");
+const cloudinary = require("../middlewares/cloudinary");
 
 exports.allProducts = (req, res) => {
   try {
@@ -84,20 +85,25 @@ exports.createProduct = async (req, res) => {
       sizes,
       colors,
       categories,
-      relativeProducts,
+      // relativeProducts,
     } = req.body;
 
     colors = colors.split(",");
     categories = categories.split(",");
-    if (relativeProducts) {
-      relativeProducts = relativeProducts.split(",");
-    }
+    // if (relativeProducts) {
+    //   relativeProducts = relativeProducts.split(",");
+    // }
 
-    // add images
+    // Upload images to Cloudinary
     const files = req.files;
     const images = [];
     for (i = 0; i < files.length; i++) {
-      images.push({ color: colors[i], file: files[i].filename });
+      const result = await cloudinary.uploader.upload(files[i].path); // Upload each image to Cloudinary
+      images.push({
+        color: colors[i],
+        file: result.secure_url,
+        cloudinary_id: result.public_id,
+      });
     }
 
     const product = new productModel({
@@ -108,7 +114,7 @@ exports.createProduct = async (req, res) => {
       sizes,
       description,
       categories,
-      relativeProducts,
+      // relativeProducts,
     });
     await product.save();
 
